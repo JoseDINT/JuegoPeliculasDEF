@@ -181,11 +181,13 @@
             </Style.Triggers>
         </Style>
 
-        <DataTemplate DataType="{x:Type local:Pelicula}">
+      
+
+            <DataTemplate DataType="{x:Type local:Pelicula}">
             <Border BorderThickness="3"
-                    BorderBrush="White"
-                    Background="Indigo"
-                    Height="280"
+                    BorderBrush="#FF00F3FF"
+                    Background="White"
+                    Height="300"
                     Width="240"
                     Margin="10"
                     Padding="10,0,10,5">
@@ -211,7 +213,13 @@
         </DataTemplate>
 
 
-
+        <Style TargetType="{x:Type TextBlock}" x:Key="ContadorPuntos">
+            <Style.Resources>
+                <Storyboard x:Key="flashAnimation" >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" AutoReverse="True" Duration="0:0:0.5" RepeatBehavior="Forever" />
+                </Storyboard>
+            </Style.Resources>
+        </Style>
 
 
     </Window.Resources>
@@ -355,7 +363,8 @@
                                         FontWeight="Normal"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Center"
-                                        Foreground="#FFAA0000">
+                                        Foreground="#FFAA0000"
+                                        Style="{StaticResource ContadorPuntos}">
 
                                     </TextBlock>
                                 </Viewbox>
