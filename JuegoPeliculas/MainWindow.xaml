@@ -1,0 +1,607 @@
+﻿<Window
+    x:Class="EjercicioPeliculas.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:EjercicioPeliculas"
+    mc:Ignorable="d"
+    Title="JuegoPelículas"
+    MinHeight="650"
+    MinWidth="800"
+
+    Icon="/assets/PopCorn.ico">
+
+    <Window.Resources>
+        <ControlTemplate x:Key="EstiloToggle" TargetType="{x:Type CheckBox}">
+            <ControlTemplate.Resources>
+                <Storyboard x:Key="right">
+                    <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="button" Duration="0:0:0.4" From="0,0,0,0" To="28,0,0,0" >
+                        <ThicknessAnimation.EasingFunction>
+                            <CircleEase EasingMode="EaseOut"/>
+                        </ThicknessAnimation.EasingFunction>
+                    </ThicknessAnimation>
+                </Storyboard>
+                <Storyboard x:Key="left">
+                    <ThicknessAnimation Storyboard.TargetProperty="Margin" Storyboard.TargetName="button" Duration="0:0:0.4" From="28,0,0,0" To="0,0,0,0" >
+                        <ThicknessAnimation.EasingFunction>
+                            <CircleEase EasingMode="EaseOut"/>
+                        </ThicknessAnimation.EasingFunction>
+                    </ThicknessAnimation>
+                </Storyboard>
+            </ControlTemplate.Resources>
+            <StackPanel Orientation="Horizontal" UseLayoutRounding="True" d:DesignUseLayoutRounding="True">
+                <Grid UseLayoutRounding="True" d:DesignUseLayoutRounding="True">
+                    <Border Background="LightGray" CornerRadius="10" Height="20" Margin="5,0" UseLayoutRounding="True" Width="45" d:DesignUseLayoutRounding="True"/>
+                    <Border x:Name="button" CornerRadius="12.5" HorizontalAlignment="Left" Height="25" UseLayoutRounding="True" Width="25" d:DesignUseLayoutRounding="True"/>
+                </Grid>
+                <ContentPresenter x:Name="content" Content="{TemplateBinding Content}" Margin="10,0,0,0" UseLayoutRounding="True" VerticalAlignment="Center" d:DesignUseLayoutRounding="True"/>
+            </StackPanel>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="false">
+                    <Trigger.ExitActions>
+                        <RemoveStoryboard BeginStoryboardName="leftt"></RemoveStoryboard>
+                        <BeginStoryboard Storyboard="{StaticResource right}" x:Name="rightt" ></BeginStoryboard>
+                    </Trigger.ExitActions>
+                    <Setter TargetName="button" Property="Background" Value="#757575"></Setter>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Trigger.ExitActions>
+                        <RemoveStoryboard BeginStoryboardName="rightt"></RemoveStoryboard>
+                        <BeginStoryboard Storyboard="{StaticResource left}" x:Name="leftt" ></BeginStoryboard>
+                    </Trigger.ExitActions>
+                    <Setter TargetName="button" Property="Background" Value="#FF00D8DE"></Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="BotonesTemplate" TargetType="{x:Type Button}">
+
+            <Border x:Name="border" CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="#FF0C99E4" SnapsToDevicePixels="True"
+              TextElement.Foreground="White">
+
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsDefaulted" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FF5894B6"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FFFFFFFF"/>
+
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FF0A4A6C"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FFFFFFFF"/>
+
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FF008000"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF008000"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" TargetName="border" Value="#FF808080"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF808080"/>
+
+                </Trigger>
+
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="TextBoxControlTemplate1" TargetType="{x:Type TextBox}">
+            <Border x:Name="border" BorderBrush="#FF00A2FF" BorderThickness="4" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="3">
+                <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Border x:Name="Border" BorderThickness="1,1,1,0" CornerRadius="5,5,0,0"
+                        Padding="25,5,25,5" Margin="0,0,0,0" BorderBrush="Gainsboro">
+                            <ContentPresenter x:Name="ContentSite" ContentSource="Header" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#0776B2"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#6FB8DF" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="TextTabStyle">
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontSize" Value="25"/>
+
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="CamposGeneros" BasedOn="{StaticResource TextTabStyle}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FontSize" 
+                    Value="20"/>
+            <Setter Property="Margin" 
+                    Value="5"/>
+            <Setter Property="Height"
+                    Value="30"/>
+            <Setter Property="Padding"
+                    Value="10,0"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground"
+                    Value="#FF0C99E4"/>
+            <Setter Property="FontSize"
+                    Value="20"/>
+        </Style>
+
+        <Style TargetType="Image" x:Key="VisibilidadGeneroComedia">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=PeliculaActual.Genero}"
+                             Value="Comedia"
+                    >
+                    <Setter Property="Visibility"
+                            Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger
+                    Binding="{Binding Path=PeliculaActual.Genero}"
+                    Value="">
+                    <Setter Property="Visibility"
+                            Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <DataTemplate DataType="{x:Type local:Pelicula}">
+            <Border BorderThickness="3"
+                    BorderBrush="White"
+                    Background="Indigo"
+                    Height="280"
+                    Width="240"
+                    Margin="10"
+                    Padding="10,0,10,5">
+                <Border.Effect>
+                    <DropShadowEffect></DropShadowEffect>
+                </Border.Effect>
+                <DockPanel>
+
+                    <Viewbox Height="30"
+                             DockPanel.Dock="Bottom">
+                        <TextBlock Text="{Binding Path=Titulo}"
+                                   Foreground="Black">
+                        </TextBlock>
+                    </Viewbox>
+
+                    <Image Source="{Binding Path=Cartel}"
+                           Margin="5"
+                           Stretch="UniformToFill">
+                    </Image>
+                    
+                </DockPanel>
+            </Border>
+        </DataTemplate>
+
+
+
+
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid>
+            <TabControl>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel 
+                            Orientation="Horizontal">
+                            <Image 
+                                Source="assets/juego.png"
+                                Width="50"/>
+                            <TextBlock 
+                                Style="{StaticResource TextTabStyle}"
+                                Text="Jugar"/>
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <Grid>
+                        <Grid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF70CCFF"/>
+                                <GradientStop Color="#FF3E52A8" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition MaxWidth="900"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="50"></RowDefinition>
+                            <RowDefinition
+                                Height="100"></RowDefinition>
+                            <RowDefinition
+                                Height="110"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition
+                                Height="40"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock                           
+                            Margin="10"
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Text="Cartel de la película">
+                        </TextBlock>
+
+                        <Image
+                            x:Name="CartelImagen"
+                            Grid.Column="0"
+                            Grid.RowSpan="3"
+                            Grid.Row="1"
+                            Source="{Binding Path=PeliculaActual.Cartel}"
+                            Stretch="Uniform"
+                            HorizontalAlignment="Left"
+                            Margin="10,0">
+                            <Image.Effect>
+                                <BlurEffect
+                                    Radius="80" />
+                            </Image.Effect>
+                        </Image>
+
+                        <StackPanel
+                            Grid.ColumnSpan="2"
+                            Grid.Row="4"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="10,0">
+
+                            <Image
+                                Width="30"
+                                Margin="10,0"
+                                VerticalAlignment="Center"
+                                Source="/assets/flechas.png"
+                                MouseLeftButtonUp="Image_Left_MouseLeftButtonUp"
+                                RenderTransformOrigin="0.5,0.5">
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform
+                                            ScaleX="-1" />
+                                        <SkewTransform />
+                                        <RotateTransform />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                            <TextBlock
+                                FontSize="30"
+                                VerticalAlignment="Center"
+                                Text="{Binding Path=Actual}"
+                                >
+
+                            </TextBlock>
+                            <TextBlock
+                                FontSize="30"
+                                VerticalAlignment="Center"
+                                Text="/"
+                                Margin="10,0">
+                            </TextBlock>
+                            <TextBlock
+                                FontSize="30"
+                                VerticalAlignment="Center"
+                                Text="{Binding Path=Total}">
+
+                            </TextBlock>
+
+                            <Image
+                                Width="30"
+                                VerticalAlignment="Center"
+                                Margin="10,0"
+                                Source="/assets/flechas.png"
+                                MouseLeftButtonUp="Image_Right_MouseLeftButtonUp">
+                            </Image>
+                        </StackPanel>
+                        <TextBlock
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            FontSize="20"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="Puntuación">
+                        </TextBlock>
+                        <DockPanel
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            >
+                            <Border BorderBrush="White" BorderThickness="3" CornerRadius="5" ToolTip="Puntuación">
+                                <Viewbox>
+                                    <TextBlock
+                                      
+                                   FontFamily="Alarm clock"
+                                   Text="0000"
+                                        FontWeight="Normal"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Foreground="#FFAA0000">
+
+                                    </TextBlock>
+                                </Viewbox>
+                            </Border>
+
+                            <StackPanel
+                                
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right">
+                                <Button Template="{DynamicResource BotonesTemplate}">Nueva Partida
+                                </Button>
+                                <Button Template="{DynamicResource BotonesTemplate}">Finalizar partida
+                                </Button>
+                            </StackPanel>
+                        </DockPanel>
+
+                        <DockPanel                           
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Margin="0,10">
+                            <TextBlock
+                                DockPanel.Dock="Top"
+                                Text="Título de la película"
+                                FontWeight="Bold"
+                                Margin="0,10">
+                            </TextBlock>
+
+                            <Button DockPanel.Dock="Right"
+                                    Content="Validar"
+                                    Template="{DynamicResource BotonesTemplate}"
+                                    />
+
+                            <TextBox
+                                    DockPanel.Dock="Left"
+                                Margin="0,0,10,10"
+                                    Template="{DynamicResource TextBoxControlTemplate1}">
+                            </TextBox>
+                        </DockPanel>
+
+                        <DockPanel
+                            Grid.Column="1"
+                            Grid.Row="3">
+                            <TextBlock FontSize="20" DockPanel.Dock="Top">Ver Pista</TextBlock>
+                            <CheckBox DockPanel.Dock="Top"
+                                      x:Name="PistaCheckBox"
+                                      x:FieldModifier="public"
+                                Template="{DynamicResource EstiloToggle}"
+                                      TextBlock.FontSize="20"
+                                      Margin="0,10,0,20" Checked="PistaCheckBox_Checked" Unchecked="PistaCheckBox_Unchecked"
+                                      
+                                      ></CheckBox>
+
+
+                            <TextBox x:Name="PistaTextBox" DockPanel.Dock="Top"
+                                     Margin="0,0,10,10"
+                                     IsReadOnly="True"
+                                     Template="{DynamicResource TextBoxControlTemplate1}"
+                                     Text="{Binding Path=PeliculaActual.Pista}"                                    
+                             ></TextBox>
+
+                            <UniformGrid
+                                
+                                Rows="2">
+                                <Image
+                                    Source="/assets/generos/comedia.png"
+                                    Style="{StaticResource VisibilidadGeneroComedia}">
+                                </Image>
+                                <Image
+                                    Source="/assets/generos/drama.png">
+                                </Image>
+                                <Image
+                                    Source="/assets/generos/accion.png">
+                                </Image>
+                                <Image
+                                    Source="/assets/generos/terror.png">
+                                </Image>
+                                <Image
+                                    Source="/assets/generos/scifi.png">
+                                </Image>
+                                <TextBlock Style="{StaticResource CamposGeneros}">Comedia
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource CamposGeneros}">Drama
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource CamposGeneros}">Acción
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource CamposGeneros}">Terror
+                                </TextBlock>
+                                <TextBlock Style="{StaticResource CamposGeneros}">Sci-Fi
+                                </TextBlock>
+
+                            </UniformGrid>
+
+                            <UniformGrid HorizontalAlignment="Center"
+                                         Rows="1">
+
+                            </UniformGrid>
+                        </DockPanel>
+                    </Grid>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <Image
+                                Source="assets/gestion.png"
+                                Width="60" />
+                            <TextBlock
+                                Text="Gestionar"
+                                Style="{StaticResource TextTabStyle}" />
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <Grid Margin="5">
+                        <Grid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF70CCFF" Offset="0.487"/>
+                                <GradientStop Color="#FF3E52A8" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="220"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <ListBox x:Name="peliculasListBox"
+                     Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" 
+                     ItemsSource="{Binding Path=Peliculas}"
+                     SelectedItem="{Binding Path=PeliculaSeleccionada}"
+                                 Background="#FF0C99E4"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+
+                        <Grid Grid.Column="0" Grid.Row="3" Margin="15,0,0,0">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition ></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0"
+                                Text="Título de la película"
+                                       VerticalAlignment="Center"
+                                       >
+                            </TextBlock>
+                            <TextBox Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center" Margin="0,5" Template="{DynamicResource TextBoxControlTemplate1}"
+                                     Text="{Binding Path=PeliculaSeleccionada.Titulo, UpdateSourceTrigger=PropertyChanged}">
+                            </TextBox>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0"
+                                Text="Pista de la película"
+                                       VerticalAlignment="Center"
+                                       
+                                       >
+                            </TextBlock>
+                            <TextBox Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" Margin="0,5" Template="{DynamicResource TextBoxControlTemplate1}"
+                                     Text="{Binding Path=PeliculaSeleccionada.Pista, UpdateSourceTrigger=PropertyChanged}">
+                            </TextBox>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0"
+                                Text="Imágen de la película"
+                                       VerticalAlignment="Center"
+                                       >
+                            </TextBlock>
+                            <TextBox Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" Margin="0,5" Template="{DynamicResource TextBoxControlTemplate1}"
+                                     Text="{Binding Path=PeliculaSeleccionada.Cartel, UpdateSourceTrigger=PropertyChanged}">
+                            </TextBox>
+                        </Grid>
+
+                        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
+                            <Button Content="Cargar de JSON"
+                                    Template="{DynamicResource BotonesTemplate}"
+                                    Click="Button_Cargar_Click">
+                            </Button>
+                            <Button Content="Guardar en JSON"
+                                    Template="{DynamicResource BotonesTemplate}">
+                            </Button>
+                            <Button Content="Añadir Película"
+                                    Template="{DynamicResource BotonesTemplate}"
+                                    Margin="5,40,5,5">
+                            </Button>
+                            <Button Content="Editar Película"
+                                    Template="{DynamicResource BotonesTemplate}">
+                            </Button>
+                            <Button Content="Eliminar Película"
+                                    Template="{DynamicResource BotonesTemplate}"
+                                    Click="Eliminar_Button_Click">
+                            </Button>
+                        </StackPanel>
+
+                        <Button Grid.Column="1" 
+                                Grid.Row="3"    
+                                VerticalAlignment="Bottom" 
+                                Content="Examinar"
+                                Template="{DynamicResource BotonesTemplate}">
+                        </Button>
+                        <StackPanel Grid.Row="4" 
+                                    Grid.Column="0" 
+                                    Orientation="Horizontal" 
+                                    VerticalAlignment="Center" 
+                                    Margin="15,0,0,0">
+
+                            <TextBlock Text="Nivel de dificultad" 
+                                       >
+                            </TextBlock>
+                            <ComboBox Width="80" 
+                                      ItemsSource="{Binding Path=NivelDificultad}"
+                                      SelectedItem="{Binding Path=PeliculaSeleccionada.Genero, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="45,0,10,0" 
+                                      >
+                            </ComboBox>
+
+                            <TextBlock Text="Género" 
+                                        
+                                       Margin="60,0,0,0">
+                            </TextBlock>
+                            <ComboBox Width="100" 
+                                      ItemsSource="{Binding Path=GeneroPelicula}"
+                                      SelectedItem="{Binding Path=PeliculaSeleccionada.Nivel, UpdateSourceTrigger=PropertyChanged}"
+                                      Margin="10,0,0,0">
+                            </ComboBox>
+                        </StackPanel>
+
+
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+
+</Window>
