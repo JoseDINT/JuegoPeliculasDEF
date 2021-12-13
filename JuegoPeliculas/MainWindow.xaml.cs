@@ -48,14 +48,50 @@ namespace EjercicioPeliculas
             PistaTextBox.Visibility = Visibility.Visible;
         }
 
-        private void Button_Cargar_Click(object sender, RoutedEventArgs e)
-        {    
-            vm.Peliculas = vm.CargarListaPeliculasJSON();
+
+        private void NuevaPartida_Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.IniciarPartida();
         }
 
-        private void Eliminar_Button_Click(object sender, RoutedEventArgs e)
+        private void FinalizarPartida_Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.FinalizarPartida();
+        }
+
+        private void Validar_Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.ValidarRespuesta();
+        }
+
+        private void GuardarJSON_Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.GuardarJSON();
+        }
+
+        private void CargarJSON_Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.CargarJSON();
+        }
+
+        private void AnyadirPelicula_Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.AnyadirPelicula();
+        }
+
+        private void EditarPelicula_Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.EditarPelicula();
+        }
+
+        private void EliminarPelicula_Button_Click(object sender, RoutedEventArgs e)
         {
             vm.EliminarPelicula();
+        }
+
+        private void Examinar_Button_Click(object sender, RoutedEventArgs e)
+        {
+            vm.ExaminarImagen();
         }
     }
 }

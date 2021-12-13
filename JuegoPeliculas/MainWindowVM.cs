@@ -27,7 +27,7 @@ namespace EjercicioPeliculas
 
         public MainWindowVM()
         {
-            Peliculas = CargarListaPeliculasJSON();
+            Peliculas = CargarJSON();
             PeliculaActual = Peliculas[0];
             Total = Peliculas.Count;
             Actual = 1;
@@ -58,7 +58,27 @@ namespace EjercicioPeliculas
             }
         }
 
+        internal void IniciarPartida()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void FinalizarPartida()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void ValidarRespuesta()
+        {
+           // if(PeliculaActual.Titulo == )
+        }
+
         private int _total;
+
+        internal void GuardarJSON()
+        {
+            throw new NotImplementedException();
+        }
 
         public int Total
         {
@@ -69,7 +89,17 @@ namespace EjercicioPeliculas
             }
         }
 
+        internal void AnyadirPelicula()
+        {
+            throw new NotImplementedException();
+        }
+
         private int _actual;
+
+        internal void EditarPelicula()
+        {
+            throw new NotImplementedException();
+        }
 
         public int Actual
         {
@@ -78,6 +108,11 @@ namespace EjercicioPeliculas
             {
                 SetProperty(ref _actual, value);
             }
+        }
+
+        internal void ExaminarImagen()
+        {
+            throw new NotImplementedException();
         }
 
         private ObservableCollection<string> _generoPelicula;
@@ -126,7 +161,7 @@ namespace EjercicioPeliculas
 
         }
 
-        public ObservableCollection<Pelicula> CargarListaPeliculasJSON()
+        public ObservableCollection<Pelicula> CargarJSON()
         {
             _ = new ObservableCollection<Pelicula>();
             String peliculasJson = File.ReadAllText("peliculas.json");

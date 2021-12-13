@@ -42,7 +42,11 @@ namespace EjercicioPeliculas
 
         public Pelicula()
         {
-
+            Titulo = "";
+            Pista = "";
+            Cartel = "";
+            Nivel = "";
+            Genero = "";
         }
 
         public Pelicula(string titulo, string pista, string cartel, string nivel, string genero)
@@ -52,6 +56,6 @@ namespace EjercicioPeliculas
             Cartel = cartel;
             Nivel = nivel;
             Genero = genero;
-        }     
+        }
     }
 }

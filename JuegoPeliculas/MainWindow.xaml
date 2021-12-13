@@ -164,26 +164,69 @@
                     Value="20"/>
         </Style>
 
-        <Style TargetType="Image" x:Key="VisibilidadGeneroComedia">
+        <Style TargetType="Image" x:Key="VisibilidadGenero">
+            <Setter Property="Visibility" 
+                    Value="Collapsed"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=PeliculaActual.Genero}"
-                             Value="Comedia"
-                    >
+                             Value="Acción">
                     <Setter Property="Visibility"
                             Value="Visible"/>
+                    <Setter Property="Source"
+                            Value="assets\generos\accion.png"/>
+                    <Setter Property="ToolTip"
+                            Value="Acción"/>
                 </DataTrigger>
-                <DataTrigger
-                    Binding="{Binding Path=PeliculaActual.Genero}"
-                    Value="">
+                <DataTrigger Binding="{Binding Path=PeliculaActual.Genero}"
+                             Value="Comedia">
                     <Setter Property="Visibility"
-                            Value="Collapsed"/>
+                            Value="Visible"/>
+                    <Setter Property="Source"
+                            Value="assets\generos\comedia.png"/>
+                    <Setter Property="ToolTip"
+                            Value="Comedia"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=PeliculaActual.Genero}"
+                             Value="Ciencia-Ficción">
+                    <Setter Property="Visibility"
+                            Value="Visible"/>
+                    <Setter Property="Source"
+                            Value="assets\generos\scifi.png"/>
+                    <Setter Property="ToolTip"
+                            Value="Ciencia Ficción"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=PeliculaActual.Genero}"
+                             Value="Drama">
+                    <Setter Property="Visibility"
+                            Value="Visible"/>
+                    <Setter Property="Source"
+                            Value="assets\generos\drama.png"/>
+                    <Setter Property="ToolTip"
+                            Value="Drama"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=PeliculaActual.Genero}"
+                             Value="Terror">
+                    <Setter Property="Visibility"
+                            Value="Visible"/>
+                    <Setter Property="Source"
+                            Value="assets\generos\terror.png"/>
+                    <Setter Property="ToolTip"
+                            Value="Terror"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
 
-      
+        <Style TargetType="{x:Type TextBlock}" x:Key="ContadorPuntos">
+            <Style.Resources>
+                <Storyboard x:Key="flashAnimation" >
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" AutoReverse="True" Duration="0:0:0.5" RepeatBehavior="Forever" />
+                </Storyboard>
+            </Style.Resources>
+        </Style>
 
-            <DataTemplate DataType="{x:Type local:Pelicula}">
+
+
+        <DataTemplate DataType="{x:Type local:Pelicula}">
             <Border BorderThickness="3"
                     BorderBrush="#FF00F3FF"
                     Background="White"
@@ -207,19 +250,13 @@
                            Margin="5"
                            Stretch="UniformToFill">
                     </Image>
-                    
+
                 </DockPanel>
             </Border>
         </DataTemplate>
 
 
-        <Style TargetType="{x:Type TextBlock}" x:Key="ContadorPuntos">
-            <Style.Resources>
-                <Storyboard x:Key="flashAnimation" >
-                    <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" AutoReverse="True" Duration="0:0:0.5" RepeatBehavior="Forever" />
-                </Storyboard>
-            </Style.Resources>
-        </Style>
+
 
 
     </Window.Resources>
@@ -374,9 +411,9 @@
                                 
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right">
-                                <Button Template="{DynamicResource BotonesTemplate}">Nueva Partida
+                                <Button Template="{DynamicResource BotonesTemplate}" Click="NuevaPartida_Button_Click">Nueva Partida
                                 </Button>
-                                <Button Template="{DynamicResource BotonesTemplate}">Finalizar partida
+                                <Button Template="{DynamicResource BotonesTemplate}" Click="FinalizarPartida_Button_Click">Finalizar partida
                                 </Button>
                             </StackPanel>
                         </DockPanel>
@@ -394,7 +431,7 @@
 
                             <Button DockPanel.Dock="Right"
                                     Content="Validar"
-                                    Template="{DynamicResource BotonesTemplate}"
+                                    Template="{DynamicResource BotonesTemplate}" Click="Validar_Button_Click"
                                     />
 
                             <TextBox
@@ -428,39 +465,17 @@
                             <UniformGrid
                                 
                                 Rows="2">
-                                <Image
-                                    Source="/assets/generos/comedia.png"
-                                    Style="{StaticResource VisibilidadGeneroComedia}">
+                                <Image                                 
+                                    Style="{StaticResource VisibilidadGenero}">
                                 </Image>
-                                <Image
-                                    Source="/assets/generos/drama.png">
-                                </Image>
-                                <Image
-                                    Source="/assets/generos/accion.png">
-                                </Image>
-                                <Image
-                                    Source="/assets/generos/terror.png">
-                                </Image>
-                                <Image
-                                    Source="/assets/generos/scifi.png">
-                                </Image>
-                                <TextBlock Style="{StaticResource CamposGeneros}">Comedia
-                                </TextBlock>
-                                <TextBlock Style="{StaticResource CamposGeneros}">Drama
-                                </TextBlock>
-                                <TextBlock Style="{StaticResource CamposGeneros}">Acción
-                                </TextBlock>
-                                <TextBlock Style="{StaticResource CamposGeneros}">Terror
-                                </TextBlock>
-                                <TextBlock Style="{StaticResource CamposGeneros}">Sci-Fi
+                                
+                                <TextBlock Style="{StaticResource CamposGeneros}"
+                                           Text="{Binding Path=PeliculaActual.Genero}">
+                                            
                                 </TextBlock>
 
                             </UniformGrid>
 
-                            <UniformGrid HorizontalAlignment="Center"
-                                         Rows="1">
-
-                            </UniformGrid>
                         </DockPanel>
                     </Grid>
                 </TabItem>
@@ -555,21 +570,22 @@
                         <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3">
                             <Button Content="Cargar de JSON"
                                     Template="{DynamicResource BotonesTemplate}"
-                                    Click="Button_Cargar_Click">
+                                    Click="CargarJSON_Button_Click">
                             </Button>
                             <Button Content="Guardar en JSON"
-                                    Template="{DynamicResource BotonesTemplate}">
+                                    Template="{DynamicResource BotonesTemplate}" Click="GuardarJSON_Button_Click">
                             </Button>
                             <Button Content="Añadir Película"
                                     Template="{DynamicResource BotonesTemplate}"
-                                    Margin="5,40,5,5">
+                                    Margin="5,40,5,5" Click="AnyadirPelicula_Button_Click">
                             </Button>
                             <Button Content="Editar Película"
-                                    Template="{DynamicResource BotonesTemplate}">
+                                    Template="{DynamicResource BotonesTemplate}"
+                                    Click="EditarPelicula_Button_Click">
                             </Button>
                             <Button Content="Eliminar Película"
                                     Template="{DynamicResource BotonesTemplate}"
-                                    Click="Eliminar_Button_Click">
+                                    Click="EliminarPelicula_Button_Click">
                             </Button>
                         </StackPanel>
 
@@ -577,7 +593,7 @@
                                 Grid.Row="3"    
                                 VerticalAlignment="Bottom" 
                                 Content="Examinar"
-                                Template="{DynamicResource BotonesTemplate}">
+                                Template="{DynamicResource BotonesTemplate}" Click="Examinar_Button_Click">
                         </Button>
                         <StackPanel Grid.Row="4" 
                                     Grid.Column="0" 
@@ -605,7 +621,6 @@
                                       Margin="10,0,0,0">
                             </ComboBox>
                         </StackPanel>
-
 
                     </Grid>
                 </TabItem>
