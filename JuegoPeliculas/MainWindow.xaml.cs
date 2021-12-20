@@ -39,13 +39,13 @@ namespace EjercicioPeliculas
 
         private void PistaCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            PistaTextBox.Visibility = Visibility.Hidden;
+            
             vm.MostrarPista();
         }
 
         private void PistaCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            PistaTextBox.Visibility = Visibility.Visible;
+            vm.OcultarPista();
         }
 
 

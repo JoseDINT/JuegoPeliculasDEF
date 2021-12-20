@@ -9,18 +9,35 @@ namespace EjercicioPeliculas
 {
     class JsonService
     {
-        //Paquete NuGet para JSON: Newtonsoft.Json
-        /*
-        ObservableCollection<Pelicula> lista = new ObservableCollection<Pelicula>();
-        //Añadir a lista
 
-        //Exportar a un fichero JSON
-        
-        string peliculasJson = JsonConvert.SerializeObject(lista);
-        File.WriteAllText("peliculas.json", peliculasJson);
+        public void GuardarJsonService(in ObservableCollection<Pelicula> lista, in string ruta)
+        {
+            try
+            {
+                string peliculasJson = JsonConvert.SerializeObject(lista);
+                File.WriteAllText(ruta, peliculasJson);
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-        //Importar desde un fichero JSON
-        peliculasJson = File.ReadAllText("peliculas.json");
-        lista = JsonConvert.DeserializeObject<ObservableCollection<Persona>>(personasJson);*/
+        }
+        public ObservableCollection<Pelicula> CargarJsonService(in string ruta)
+        {
+            string peliculasJson = "";
+            try
+            {
+                 peliculasJson = File.ReadAllText(ruta);
+                ObservableCollection<Pelicula> listaJsonPeliculas = JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
+                return listaJsonPeliculas;
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
+        }
     }
 }

@@ -11,8 +11,10 @@ namespace EjercicioPeliculas
     class MainWindowVM : ObservableObject
     {
 
-
+        private ObservableCollection<Pelicula> lista = null;
+        private JsonService servicioJson = new JsonService();
         private ObservableCollection<Pelicula> _peliculas;
+
 
         public ObservableCollection<Pelicula> Peliculas
         {
@@ -27,11 +29,9 @@ namespace EjercicioPeliculas
 
         public MainWindowVM()
         {
-            Peliculas = CargarJSON();
-            PeliculaActual = Peliculas[0];
-            Total = Peliculas.Count;
-            Actual = 1;
 
+            Peliculas = lista;
+            ComprabarLista(Peliculas);
             NivelDificultad = new ObservableCollection<string> { "Fácil", "Medio", "Difícil" };
             GeneroPelicula = new ObservableCollection<string> { "Acción", "Comedia", "Drama", "Ciencia-Ficción", "Terror" };
         }
@@ -45,6 +45,22 @@ namespace EjercicioPeliculas
             {
                 SetProperty(ref _peliculaActual, value);
             }
+        }
+
+        public void ComprabarLista(ObservableCollection<Pelicula> Peliculas)
+        {
+            if (Peliculas != null)
+            {
+                PeliculaActual = Peliculas[0];
+                Total = Peliculas.Count;
+                Actual = 1;
+            }
+
+        }
+
+        internal void OcultarPista()
+        {
+            
         }
 
         private Pelicula _peliculaSeleccionada;
@@ -70,15 +86,12 @@ namespace EjercicioPeliculas
 
         internal void ValidarRespuesta()
         {
-           // if(PeliculaActual.Titulo == )
+            // if(PeliculaActual.Titulo == )
         }
 
         private int _total;
 
-        internal void GuardarJSON()
-        {
-            throw new NotImplementedException();
-        }
+
 
         public int Total
         {
@@ -163,10 +176,22 @@ namespace EjercicioPeliculas
 
         public ObservableCollection<Pelicula> CargarJSON()
         {
-            _ = new ObservableCollection<Pelicula>();
-            String peliculasJson = File.ReadAllText("peliculas.json");
-            ObservableCollection<Pelicula> listaJsonPeliculas = JsonConvert.DeserializeObject<ObservableCollection<Pelicula>>(peliculasJson);
-            return listaJsonPeliculas;
+            DialogoService abrirDialogo = new DialogoService();
+            String ruta = abrirDialogo.AbrirArchivoDialogo();
+
+            if (ruta != null)
+            {
+                lista = servicioJson.CargarJsonService(ruta);
+            }
+
+            return lista;
+        }
+
+        internal void GuardarJSON()
+        {
+
+            DialogoService guardarDialogo = new DialogoService();
+            guardarDialogo.GuardarAchivoDialogo();
         }
 
         public static ObservableCollection<Pelicula> ModificarPeliculasJSON()
